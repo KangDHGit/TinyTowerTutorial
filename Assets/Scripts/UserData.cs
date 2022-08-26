@@ -4,12 +4,12 @@ using UnityEngine;
 
 namespace TinyTower
 {
+    public delegate void callback(bool result);
     public class UserData : MonoBehaviour
     {
         public static UserData I;
 
         const string KEY_GOLD = "user_data_gold";
-        const int INIT_GOLD = 10000;
 
         const string KEY_POPULATION = "user_data_population";
         const int INIT_POPULATION = 1;
@@ -29,7 +29,7 @@ namespace TinyTower
             // 앱을 처음 실행하는 것이라면 자금을 주고 시작
             if (!PlayerPrefs.HasKey(KEY_GOLD))
             {
-                PlayerPrefs.SetInt(KEY_GOLD, INIT_GOLD);
+                PlayerPrefs.SetInt(KEY_GOLD, Common.INIT_GOLD);
             }
             if(!PlayerPrefs.HasKey(KEY_POPULATION))
             {
@@ -40,10 +40,21 @@ namespace TinyTower
             _population = PlayerPrefs.GetInt(KEY_POPULATION);
         }
 
-        // Update is called once per frame
-        void Update()
+        public void UseGold(int cost, callback cb)
         {
-            
+            if (_gold >= cost)
+            {
+                _gold -= cost;
+                PlayerPrefs.SetInt(KEY_GOLD, _gold);
+                UI_Manager.I.Refresh_Gold_UI();
+
+                // 결과를 알려주도록 함수를 호출
+                cb(true);
+            }
+            else
+            {
+                cb(false);
+            }
         }
     }
 }

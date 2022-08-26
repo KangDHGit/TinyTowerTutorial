@@ -22,7 +22,7 @@ namespace TinyTower
             Refresh_Gold_UI();
         }
 
-        void Refresh_Gold_UI()
+        public void Refresh_Gold_UI()
         {
             _txt_Gold.text = UserData.I.Gold.ToString();
             _txt_population.text = UserData.I.Population.ToString();
