@@ -21,7 +21,7 @@ namespace TinyTower
                 int choice = Random.Range(0, _templates.Length);
 
                 GameObject newBlock = Instantiate(_templates[choice]);
-                newBlock.transform.SetParent(transform.parent);
+                newBlock.transform.SetParent(FloorManager.I.transform);
                 newBlock.transform.position = new Vector3(0, transform.position.y, 0);
                 newBlock.SetActive(true);
 
@@ -30,6 +30,16 @@ namespace TinyTower
             else
             {
                 // 돈이부족합니다 팝업창
+                PlatformDialog.SetButtonLabel("OK");
+                PlatformDialog.Show(
+                    "알림",
+                    "골드가 부족합니다",
+                    PlatformDialog.Type.SubmitOnly,
+                    () => {
+                        Debug.Log("OK");
+                    },
+                    null
+                                    );
             }
         }
     }

@@ -40,6 +40,12 @@ namespace TinyTower
             _population = PlayerPrefs.GetInt(KEY_POPULATION);
         }
 
+        public void ResetData()
+        {
+            PlayerPrefs.SetInt(KEY_GOLD, Common.INIT_GOLD);
+            PlayerPrefs.SetInt(KEY_POPULATION, INIT_POPULATION);
+        }
+
         public void UseGold(int cost, callback cb)
         {
             if (_gold >= cost)
@@ -55,6 +61,15 @@ namespace TinyTower
             {
                 cb(false);
             }
+        }
+
+        public void AddGold(int cost,callback cb = null)
+        {
+            _gold += cost;
+            PlayerPrefs.SetInt(KEY_GOLD, _gold);
+            UI_Manager.I.Refresh_Gold_UI();
+            if (cb != null)
+                cb(true);
         }
     }
 }
