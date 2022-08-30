@@ -10,14 +10,18 @@ namespace TinyTower
         public static UserData I;
 
         const string KEY_GOLD = "user_data_gold";
-
         const string KEY_POPULATION = "user_data_population";
+        const string KEY_FLOOR_LIST = "user data_floor_list";
+
         const int INIT_POPULATION = 1;
 
         [SerializeField] int _gold = 0;
         [SerializeField] int _population = 0;
+        [SerializeField] string _floorList;
         public int Gold { get { return _gold; } }
         public int Population { get { return _population; } }
+
+        public string FloorList { get { return _floorList; } }
 
         private void Awake()
         {
@@ -26,18 +30,11 @@ namespace TinyTower
 
         public void Init()
         {
-            // 앱을 처음 실행하는 것이라면 자금을 주고 시작
-            if (!PlayerPrefs.HasKey(KEY_GOLD))
-            {
-                PlayerPrefs.SetInt(KEY_GOLD, Common.INIT_GOLD);
-            }
-            if(!PlayerPrefs.HasKey(KEY_POPULATION))
-            {
-                PlayerPrefs.SetInt(KEY_POPULATION, INIT_POPULATION);
-            }
-            // 이미 실행한 적이 있다면 저장되어있는 자금을 로드
-            _gold = PlayerPrefs.GetInt(KEY_GOLD);
-            _population = PlayerPrefs.GetInt(KEY_POPULATION);
+            #region LOAD_DATA
+            LoadGold();
+            LoadFloor();
+            LoadPopulation();
+            #endregion
         }
 
         public void ResetData()
@@ -63,13 +60,51 @@ namespace TinyTower
             }
         }
 
-        public void AddGold(int cost,callback cb = null)
+        public void AddGold(int cost, callback cb = null)
         {
             _gold += cost;
             PlayerPrefs.SetInt(KEY_GOLD, _gold);
             UI_Manager.I.Refresh_Gold_UI();
             if (cb != null)
                 cb(true);
+        }
+
+        public void SaveFloor(string floorName)
+        {
+            if (PlayerPrefs.HasKey(KEY_FLOOR_LIST))
+            {
+                // 이미 저장된 정보가 있다면 콤마로 이어붙이기
+                _floorList = PlayerPrefs.GetString(KEY_FLOOR_LIST);
+                _floorList += "," + floorName;
+                PlayerPrefs.SetString(KEY_FLOOR_LIST, _floorList);
+            }
+            else
+            {
+                PlayerPrefs.SetString(KEY_FLOOR_LIST, floorName);
+            }
+        }
+        void LoadFloor()
+        {
+            if (PlayerPrefs.HasKey(KEY_FLOOR_LIST))
+            {
+                _floorList = PlayerPrefs.GetString(KEY_FLOOR_LIST);
+            }
+        }
+        void LoadGold()
+        {
+            if (!PlayerPrefs.HasKey(KEY_GOLD))
+            {
+                PlayerPrefs.SetInt(KEY_GOLD, Common.INIT_GOLD);
+            }
+            _gold = PlayerPrefs.GetInt(KEY_GOLD);
+        }
+        void LoadPopulation()
+        {
+            if (!PlayerPrefs.HasKey(KEY_POPULATION))
+            {
+                PlayerPrefs.SetInt(KEY_POPULATION, INIT_POPULATION);
+            }
+            _population = PlayerPrefs.GetInt(KEY_POPULATION);
         }
     }
 }

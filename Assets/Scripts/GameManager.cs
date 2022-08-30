@@ -14,6 +14,10 @@ namespace TinyTower
         void Start()
         {
             UserData.I.Init();
+
+            // 플로어매니저 초기화
+            FloorManager.I.Init();
+
             UI_Manager.I.Init();
         }
 

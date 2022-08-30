@@ -6,8 +6,6 @@ namespace TinyTower
 {
     public class Block : MonoBehaviour
     {
-        [SerializeField] GameObject[] _templates;
-
         private void OnMouseDown()
         {
             UserData.I.UseGold(Common.COST_SHOP,UseGoldCb);
@@ -18,14 +16,8 @@ namespace TinyTower
             if(result)
             {
                 Debug.Log(this.name);
-                int choice = Random.Range(0, _templates.Length);
-
-                GameObject newBlock = Instantiate(_templates[choice]);
-                newBlock.transform.SetParent(FloorManager.I.transform);
-                newBlock.transform.position = new Vector3(0, transform.position.y, 0);
-                newBlock.SetActive(true);
-
-                this.transform.position = new Vector3(0, transform.position.y + 4, 0);
+                
+                FloorManager.I.CreateFloor(transform.position);
             }
             else
             {
@@ -41,6 +33,10 @@ namespace TinyTower
                     null
                                     );
             }
+        }
+        public void Raise()
+        {
+            transform.position = new Vector3(0, transform.position.y + 4, 0);
         }
     }
 }
