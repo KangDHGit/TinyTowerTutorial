@@ -60,11 +60,14 @@ namespace TinyTower
             }
         }
 
-        public void AddGold(int cost, callback cb = null)
+        public void AddGold(int cost, callback cb = null, bool refredhUI = true)
         {
             _gold += cost;
             PlayerPrefs.SetInt(KEY_GOLD, _gold);
-            UI_Manager.I.Refresh_Gold_UI();
+            if (refredhUI)
+            {
+                UI_Manager.I.Refresh_Gold_UI();
+            }
             if (cb != null)
                 cb(true);
         }

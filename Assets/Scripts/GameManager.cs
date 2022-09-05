@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,6 +26,11 @@ namespace TinyTower
         void Update()
         {
             
+        }
+        private void OnApplicationQuit()
+        {
+            string stopTime = DateTime.Now.ToString();
+            PlayerPrefs.SetString("game_stop_time", stopTime);
         }
     }
 }

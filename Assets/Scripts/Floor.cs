@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,22 +25,35 @@ namespace TinyTower
     {
         public FloorType _type;
         float _nowTime = 0.0f;
-        float _nextTime = 1.0f;
+        float _coolTime = 1.0f;
+        int _income = 1;
+        string _stopTime;
+
+        public void Init()
+        {
+            if(PlayerPrefs.HasKey("game_stop_time"))
+            {
+                string lastGameTime = PlayerPrefs.GetString("game_stop_time");
+                DateTime now = DateTime.Now;
+                DateTime stopTime = DateTime.Parse(lastGameTime);
+                TimeSpan span = now - stopTime;
+                int incomeTotal = (int)(span.TotalSeconds / _coolTime * _income);
+                UserData.I.AddGold(incomeTotal, null, false);
+            }
+        }
 
         public void CollectGold()
         {
-            _nowTime = Time.time;
-            if (_nowTime > _nextTime)
+            _nowTime += Time.deltaTime;
+            if (_nowTime > _coolTime)
             {
-                UserData.I.AddGold(1);
-                _nextTime += 1.0f;
+                UserData.I.AddGold(_income);
+                _nowTime = 0.0f;
             }
         }
 
         public void ShowInfo()
         {
-            float nowTime = Time.time;
-            if(nowTime > _nextTime)
             Debug.Log(_type + " " + name);
         }
 
@@ -51,5 +65,6 @@ namespace TinyTower
         {
             ShowInfo();
         }
+
     }
 }

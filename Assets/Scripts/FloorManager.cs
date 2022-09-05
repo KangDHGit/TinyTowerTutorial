@@ -30,7 +30,7 @@ namespace TinyTower
                     {
                         if(template.name == floor)
                         {
-                            _Create(template, _blockObj.transform.position);
+                            _Create(template, _blockObj.transform.position, true);
                         }
                     }
                 }
@@ -41,16 +41,21 @@ namespace TinyTower
         {
             int choice = Random.Range(0, _templates.Length);
 
-            _Create(_templates[choice], pos);
+            _Create(_templates[choice], pos, false);
             UserData.I.SaveFloor(_templates[choice].name);
         }
-        void _Create(GameObject template, Vector3 pos)
+        void _Create(GameObject template, Vector3 pos, bool firstBuild = true)
         {
             GameObject newBlock = Instantiate(template);
             newBlock.transform.SetParent(FloorManager.I.transform);
             newBlock.transform.position = new Vector3(0, pos.y, 0);
             newBlock.name = template.name;
             newBlock.SetActive(true);
+            if (firstBuild)
+            {
+                newBlock.GetComponent<Floor>()?.Init();
+            }
+
             _blockObj.GetComponent<Block>().Raise();
 
             _floorList.Add(newBlock);
