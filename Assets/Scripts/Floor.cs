@@ -54,7 +54,12 @@ namespace TinyTower
 
         public void ShowInfo()
         {
-            Debug.Log(_type + " " + name);
+            // 가게 이름
+            // 업종
+            // 종업원
+            // 고객의 수 
+            // 단위시간당 수익
+            // 상품목록
         }
 
         private void Update()

@@ -14,6 +14,8 @@ namespace TinyTower
         }
         void Start()
         {
+            GameData.I.Init();
+
             UserData.I.Init();
 
             // 플로어매니저 초기화
