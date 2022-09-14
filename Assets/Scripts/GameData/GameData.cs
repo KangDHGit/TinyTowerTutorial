@@ -38,7 +38,7 @@ namespace TinyTower
                     while((line = reader.ReadLine()) != null)
                     {
                         string[] record = line.Split(',');
-                        Debug.Assert(record.Length == 5);
+                        Debug.Assert(record.Length == 6);
 
                         GameData_Product temp = new GameData_Product();
                         temp.name = record[0];
@@ -46,6 +46,8 @@ namespace TinyTower
                         temp.cost = Convert.ToInt32(record[2]);
                         temp.time = Convert.ToSingle(record[3]);
                         temp.quantity = Convert.ToInt32(record[4]);
+                        temp.spriteName = record[5];
+                        temp.sprite = Resources.Load<Sprite>(temp.spriteName);
                         _product_dataList.Add(temp);
                     }
                 }

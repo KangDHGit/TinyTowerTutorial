@@ -52,24 +52,29 @@ namespace TinyTower
             }
         }
 
-        public void ShowInfo()
-        {
-            // 가게 이름
-            // 업종
-            // 종업원
-            // 고객의 수 
-            // 단위시간당 수익
-            // 상품목록
-        }
-
+        
         private void Update()
         {
             CollectGold();
         }
-        private void OnMouseDown()
+       
+        private void OnMouseUp()
         {
-            ShowInfo();
-        }
+            if (!UI_Manager.I.CheckClickUI())
+            {
+                List<GameData_Product> datalist = new List<GameData_Product>();
 
+                foreach (GameData_Product data in GameData.I._product_dataList)
+                {
+                    if (data.floor == gameObject.name)
+                    {
+                        datalist.Add(data);
+                    }
+                }
+                UI_Manager.I._ui_Floor_Info.ShowInfo(datalist);
+                UI_Manager.I._ui_Floor_Info.gameObject.SetActive(true);
+                StartCoroutine(UI_Manager.I._ui_Floor_Info.OpenScreen());
+            }
+        }
     }
 }
